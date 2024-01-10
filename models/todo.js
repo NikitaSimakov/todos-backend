@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
-import { handleSaveError } from "./hooks.js";
+import { handleSaveError, handleUpdateValidate } from "./hooks.js";
+import { statusTodo } from "../constants/constants.js";
 
 const todoSchema = new Schema(
   {
@@ -8,14 +9,21 @@ const todoSchema = new Schema(
     status: {
       type: String,
       required: true,
-      enum: ["done", "progress", "pending"],
+      enum: statusTodo,
       default: "progress",
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
 );
 
+todoSchema.pre("findOneAndUpdate", handleUpdateValidate);
 todoSchema.post("save", handleSaveError);
+todoSchema.post("findOneAndUpdate", handleSaveError);
 
 const Todo = model("todo", todoSchema);
 
