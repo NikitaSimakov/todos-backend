@@ -4,6 +4,11 @@ import { handleUpdateValidate, handleSaveError } from "./hooks.js";
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      minlength: 2,
+    },
     password: {
       type: String,
       required: [true, "Password is required"],

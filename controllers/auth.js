@@ -1,11 +1,7 @@
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { HttpError } from "../helpers/HttpError.js";
 import { User } from "../models/users.js";
-import dotenv from "dotenv";
-
-dotenv.config();
-const { SECRET_KEY } = process.env;
+import jwtSign from "../helpers/JwtSign.js";
 
 export const signUp = async (req, res) => {
   const { email, password } = req.body;
@@ -16,7 +12,11 @@ export const signUp = async (req, res) => {
     ...req.body,
     password: hashPassword,
   });
+  const token = jwtSign(newUser._id);
+  await User.findOneAndUpdate({ _id: newUser._id }, { token });
   res.status(201).json({
+    token,
+    name: newUser.name,
     email: newUser.email,
     id: newUser._id,
   });
@@ -28,10 +28,7 @@ export const signIn = async (req, res) => {
   if (!user) throw HttpError(401, "invalid email or password");
   const comparePassword = await bcrypt.compare(password, user.password);
   if (!comparePassword) throw HttpError(401, "invalid email or password");
-  const payload = {
-    id: user._id,
-  };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
+  const token = jwtSign(user._id);
   await User.findOneAndUpdate({ _id: user._id }, { token });
   res.json({
     token,
