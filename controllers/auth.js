@@ -37,7 +37,7 @@ export const signIn = async (req, res) => {
 };
 
 export const signOut = async (req, res) => {
-  const { _id } = req.user;
+  const { _id } = req.body;
   const user = await User.findByIdAndUpdate(_id, { token: null });
   if (!user) throw HttpError(401);
   res.json({ message: "Signout success" }).status(204).end();
