@@ -12,14 +12,16 @@ export const getTodosList = async (req, res) => {
 
 export const postNewTodo = async (req, res) => {
   const { _id: owner } = req.user;
-  console.log(owner);
   const result = await Todo.create({ ...req.body, owner });
   res.json(result);
 };
 
 export const deleteTodo = async (req, res) => {
   const id = req.params.todoId;
-  const removing = await Todo.deleteOne({ _id: id });
+  const removing = await Todo.deleteOne(
+    { _id: id },
+    "-createdAt -updatedAt -owner"
+  );
   if (!removing) return HttpError(404, "Not found");
   return res.json({ message: `Todo with id ${id} is deleted` });
 };

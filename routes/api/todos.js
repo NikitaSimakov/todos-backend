@@ -23,12 +23,7 @@ todosRouter.get("/", ctrlWrapper(getTodosList));
 
 todosRouter.post("/", validateBody(schemaAddTodo), ctrlWrapper(postNewTodo));
 
-todosRouter.delete(
-  "/:todoId",
-  validateBody(schemaAddTodo),
-  isValidId,
-  ctrlWrapper(deleteTodo)
-);
+todosRouter.delete("/:todoId", isValidId, ctrlWrapper(deleteTodo));
 
 todosRouter.put(
   "/:todoId",
