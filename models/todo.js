@@ -10,7 +10,7 @@ const todoSchema = new Schema(
       type: String,
       required: true,
       enum: statusTodo,
-      default: "progress",
+      default: "pending",
     },
     owner: {
       type: Schema.Types.ObjectId,

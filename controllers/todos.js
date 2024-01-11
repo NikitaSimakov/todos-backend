@@ -18,10 +18,7 @@ export const postNewTodo = async (req, res) => {
 
 export const deleteTodo = async (req, res) => {
   const id = req.params.todoId;
-  const removing = await Todo.deleteOne(
-    { _id: id },
-    "-createdAt -updatedAt -owner"
-  );
+  const removing = await Todo.deleteOne({ _id: id });
   if (!removing) return HttpError(404, "Not found");
   return res.json({ message: `Todo with id ${id} is deleted` });
 };
