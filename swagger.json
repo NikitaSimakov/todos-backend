@@ -1,0 +1,319 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Easy QR and Easy Analytics API",
+    "version": "1.0.0",
+    "description": "API for Easy QR and Easy Analytics startups"
+  },
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication operations"
+    },
+    {
+      "name": "todos",
+      "description": "Operations related to todos"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://todos-backend-pqko.onrender.com"
+    }
+  ],
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": ["auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "email": "test@example.com",
+                "password": "password",
+                "name": "Test User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful registration",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Registration successful"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid input"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "summary": "Sign in",
+        "tags": ["auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "email": "test@example.com",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful sign in",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "your_access_token",
+                  "user": {
+                    "email": "test@example.com",
+                    "id": "12345",
+                    "name": "Test User"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid credentials"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signout": {
+      "post": {
+        "summary": "Sign out",
+        "tags": ["auth"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Signout success"
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "post": {
+        "summary": "Get user details",
+        "tags": ["auth"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details",
+            "content": {
+              "application/json": {
+                "example": {
+                  "user": {
+                    "_id": "659f7d46cf1035112c95509f",
+                    "name": "Test",
+                    "email": "test@mail.xs"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/todos": {
+      "get": {
+        "summary": "Get all todos",
+        "tags": ["todos"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of todos",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "_id": "659fbefc6d1a7bcd53fe4bcf",
+                    "title": "Todo number 143235434234",
+                    "description": "I make app",
+                    "status": "pending"
+                  },
+                  {
+                    "_id": "65a02d2dd6c146c312ae01c0",
+                    "title": "Need make the edit task button",
+                    "description": "Tomorrow",
+                    "status": "done"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new todo",
+        "tags": ["todos"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "title": "New Todo",
+                "description": "This is a new task",
+                "status": "pending"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New todo created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "659fbefc6d1a7bcd53fe4bcf",
+                  "title": "New Todo",
+                  "description": "This is a new task",
+                  "status": "pending"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/todos/{todoId}": {
+      "delete": {
+        "summary": "Delete a todo by ID",
+        "tags": ["todos"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo deleted",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Todo with id {todoId} is deleted"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a todo by ID",
+        "tags": ["todos"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "title": "Updated Todo",
+                "description": "This task is updated",
+                "status": "done"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Todo updated",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "659fbefc6d1a7bcd53fe4bcf",
+                  "title": "Updated Todo",
+                  "description": "This task is updated",
+                  "status": "done"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a todo's status by ID",
+        "tags": ["todos"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "status": "done"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Todo status updated",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "659fbefc6d1a7bcd53fe4bcf",
+                  "title": "Todo number 143235434234",
+                  "description": "I make app",
+                  "status": "done"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
