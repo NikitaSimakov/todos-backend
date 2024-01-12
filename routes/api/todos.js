@@ -10,6 +10,7 @@ import { ctrlWrapper } from "../../decorators/ctrlWrapper.js";
 import { validateBody } from "../../middlewares/validateBody.js";
 import {
   schemaAddTodo,
+  schemaUpdateTodo,
   schemaUpdateTodoStatus,
 } from "../../schemas/todos-schemas.js";
 import { isValidId } from "../../middlewares/IsValidId.js";
@@ -28,7 +29,7 @@ todosRouter.delete("/:todoId", isValidId, ctrlWrapper(deleteTodo));
 todosRouter.put(
   "/:todoId",
   isValidId,
-  validateBody(schemaAddTodo),
+  validateBody(schemaUpdateTodo),
   ctrlWrapper(updateTodo)
 );
 

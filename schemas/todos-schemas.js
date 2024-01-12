@@ -9,6 +9,11 @@ export const schemaAddTodo = Joi.object({
     .valid(...statusTodo),
 });
 
+export const schemaUpdateTodo = Joi.object({
+  title: Joi.string(),
+  description: Joi.string(),
+});
+
 export const schemaUpdateTodoStatus = Joi.object({
   status: Joi.string()
     .required()
